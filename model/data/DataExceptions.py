@@ -7,3 +7,8 @@ class CurrencyException(Exception):
 class NegativeDollarException(Exception):
     """ Dollar operation or input caused negative value """
     pass
+
+
+class DateOutOfBoundsException(Exception):
+    """ A date is outside of the required boundary values """
+    pass
