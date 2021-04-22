@@ -1,3 +1,5 @@
+import math
+
 from model.data.Currencies import default_currency, verified_currencies
 from model.data.DataExceptions import CurrencyException, NegativeDollarException
 
@@ -10,7 +12,7 @@ class Dollars:
                  dollars: int, cents: int = 0,
                  currency: str = default_currency):
         # Validate currency
-        cur = currency.upper() # Ensure always uppercase
+        cur = currency.upper()  # Ensure always uppercase
         if len(cur) == 3 and \
                 cur in verified_currencies or cur.isalpha():
             self.currency = cur
@@ -18,12 +20,12 @@ class Dollars:
             raise CurrencyException()
         # Validate dollar and cent values
         if dollars < 0 or cents < 0:
-            raise NegativeDollarException() # Negatives not allowed
+            raise NegativeDollarException()  # Negatives not allowed
         elif cents in range(0, 100):
             self.dollars, self.cents = dollars, cents
         else:
             self.cents = cents % 100
-            self.dollars = dollars + (cents / 100).__floor__()
+            self.dollars = dollars + math.floor(cents / 100)
 
     def __add__(self, other):
         """ Returns the Sum of two Dollar Amounts """
