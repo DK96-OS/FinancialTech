@@ -40,7 +40,7 @@ class Dollars:
         """ Returns the Difference of two Dollar Amounts """
         self.check_compatible(other)
         diff = abs(self.as_float() - other.as_float())
-        dollars = diff.__floor__()
+        dollars = math.floor(diff)
         return Dollars(
             dollars=dollars,
             cents=((diff - dollars) * 100).__round__(),
