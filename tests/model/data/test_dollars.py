@@ -5,7 +5,7 @@ from model.data.DataExceptions import CurrencyException, NegativeDollarException
 from model.data.Dollars import Dollars
 
 
-class DollarsTest(unittest.TestCase):
+class TestDollars(unittest.TestCase):
     """ Testing Dollars class initialization and operations """
     
     def test_init(self):
