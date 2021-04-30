@@ -2,9 +2,14 @@
 Accounting and Financial analysis for small business!
 
 ## Goals
-The main goal is to create a financial application for managing accounts, transactions, and reporting in a small business environment. The secondary goals are to write a lot of tests, and to create elegant system architectures.
+Create a financial application for managing accounts, transactions, and reporting in a small business environment. 
 
-### Current Status: Setup
-* Define data classes, functions and produce a flexible financial model
+### Current Status: Bookkeeping
+* Create journals and accounts for bookkeeping purposes.
+* Record transactions in the journal, specify affected accounts.
+* Manage a chart of accounts
+
+### Future Goals
+* Expand accounting model with new essential features.
 * Design and construct a modular, extensible UserInterface core
 * Add database and file system options
