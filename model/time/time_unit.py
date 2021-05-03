@@ -1,6 +1,6 @@
 from enum import IntEnum
 
-from model.data.data_exceptions import TimeConversionException
+from model.time.exceptions import TimeConversionException
 
 
 class TimeUnit(IntEnum):
