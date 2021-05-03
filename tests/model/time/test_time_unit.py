@@ -1,6 +1,6 @@
 import unittest
 
-from model.data.data_exceptions import TimeConversionException
+from model.time.exceptions import TimeConversionException
 from model.time import time_unit
 from model.time.time_unit import TimeUnit, convert_time
 
