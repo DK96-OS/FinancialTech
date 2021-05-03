@@ -1,14 +1,14 @@
 import math
 
-from model.data.Currencies import default_currency, verified_currencies
-from model.data.DataExceptions import CurrencyException, NegativeDollarException
+from model.data.currencies import default_currency, verified_currencies
+from model.data.data_exceptions import CurrencyException
 
 
 class Dollars:
     """ Represents an amount of money in dollars and cents.
     100 cents are in a dollar. """
 
-    def __init__(self, 
+    def __init__(self,
                  dollars: int, cents: int = 0,
                  currency: str = default_currency):
         # Validate currency
@@ -19,8 +19,12 @@ class Dollars:
         else:
             raise CurrencyException()
         # Validate dollar and cent values
+        if type(dollars) is not int:
+            raise TypeError('Dollars must be an integer')
+        elif type(cents) is not int:
+            raise TypeError('Cents must be an integer')
         if dollars < 0 or cents < 0:
-            raise NegativeDollarException()  # Negatives not allowed
+            raise ValueError('Negative dollars not allowed')
         elif cents in range(0, 100):
             self.dollars, self.cents = dollars, cents
         else:
@@ -54,4 +58,38 @@ class Dollars:
         if self.currency != other.currency:
             raise CurrencyException
 
-    def as_float(self): return self.dollars + (self.cents / 100.0)
+    def as_float(self):
+        return self.dollars + (self.cents / 100.0)
+
+    def __eq__(self, other):
+        return type(other) is Dollars and \
+               self.currency == other.currency and \
+               self.dollars == other.dollars and \
+               self.cents == other.cents
+
+    def __mul__(self, other):
+        if type(other) is float:
+            d = self.dollars * other
+            d_over = math.floor((d - math.floor(d)) * 100)
+            c = round(self.cents * other + d_over)
+            return Dollars(round(d), c, self.currency)
+        elif type(other) is int:
+            return Dollars(
+                self.dollars * other,
+                self.cents * other,
+                self.currency
+            )
+        else:
+            raise TypeError('Cannot multiply by non-numerical type')
+
+    def __lt__(self, other):
+        if type(other) is not Dollars:
+            raise TypeError()
+        if self.currency != other.currency:
+            raise CurrencyException()
+        return self.dollars < other.dollars or \
+               self.dollars == other.dollars and \
+               self.cents < other.cents
+
+    def __str__(self):
+        return f"${self.dollars}.{self.cents}"
