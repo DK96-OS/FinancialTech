@@ -5,9 +5,9 @@ name: Python App lint check and unit test
 
 on:
   push:
-    branches: [ main, rc ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, rc ]
+    branches: [ main, rc, interest ]
 
 jobs:
   build:
