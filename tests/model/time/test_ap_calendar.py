@@ -1,6 +1,6 @@
 import unittest
 
-from model.data.ap_calendar import APCalendar, days_in_month
+from model.time.ap_calendar import APCalendar, days_in_month
 
 
 class TestAPCalendar(unittest.TestCase):
