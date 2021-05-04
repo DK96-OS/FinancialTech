@@ -1,6 +1,7 @@
+import datetime
 import unittest
 
-from model.time.ap_calendar import APCalendar, days_in_month
+from model.time.ap_calendar import APCalendar, days_in_month, net_days
 
 
 class TestAPCalendar(unittest.TestCase):
@@ -56,6 +57,21 @@ class TestAPCalendar(unittest.TestCase):
             date = self.c_leap.end_date(i)
             print(date)
             self.assertEqual(str(days_in_month[i]), str(date)[-2:])
+
+    def test_net_days(self):
+        """ Check net 30 days due date calculations """
+        self.assertEqual(datetime.date(2018, 1, 31),
+                         net_days(datetime.date(2018, 1, 1), 30)
+                         )
+        self.assertEqual(datetime.date(2018, 3, 2),
+                         net_days(datetime.date(2018, 1, 31), 30)
+                         )
+        self.assertEqual(datetime.date(2020, 3, 1),
+                         net_days(datetime.date(2020, 1, 31), 30)
+                         )
+        self.assertEqual(datetime.date(2020, 3, 21),
+                         net_days(datetime.date(2020, 2, 20), 30)
+                         )
 
 
 if __name__ == '__main__':
