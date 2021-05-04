@@ -7,6 +7,11 @@ days_in_month = {
 }
 
 
+def net_days(start: datetime.date, days: int):
+    """ Find a future due date """
+    return start + datetime.timedelta(days=days)
+
+
 class APCalendar:
     """ Accounting Period Calendar """
     def __init__(self, year: int):
