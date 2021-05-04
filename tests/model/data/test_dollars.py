@@ -147,6 +147,12 @@ class TestDollars(unittest.TestCase):
         self.assertEqual(Dollars(3, 6), self.d2 * (3 / 10))
         self.assertEqual(Dollars(7, 14), self.d2 * (7 / 10))
 
+    def test_invalid_multiplication(self):
+        with self.assertRaises(TypeError):
+            Dollars(3) * Dollars(3)
+        with self.assertRaises(ValueError):
+            Dollars(5) * -2
+
     def test_string(self):
         self.assertEqual('$7.99', str(self.d1))
         self.assertEqual('$10.20', str(self.d2))
