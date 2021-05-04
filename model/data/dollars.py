@@ -6,8 +6,8 @@ from model.data.data_exceptions import CurrencyException
 
 class Dollars:
     """ Represents an amount of money in dollars and cents.
-    100 cents are in a dollar. """
-
+        100 cents are in a dollar.
+    """
     def __init__(self,
                  dollars: int, cents: int = 0,
                  currency: str = default_currency):
@@ -56,9 +56,10 @@ class Dollars:
         if not type(other) is Dollars:
             raise TypeError
         if self.currency != other.currency:
-            raise CurrencyException
+            raise CurrencyException('Currencies do not match')
 
     def as_float(self):
+        """ Combine Dollars and Cents to a float value """
         return self.dollars + (self.cents / 100.0)
 
     def __eq__(self, other):
@@ -69,11 +70,15 @@ class Dollars:
 
     def __mul__(self, other):
         if type(other) is float:
+            if other <= 0:
+                raise ValueError('Cannot multiply dollars by a negative')
             d = self.dollars * other
             d_over = math.floor((d - math.floor(d)) * 100)
             c = round(self.cents * other + d_over)
             return Dollars(round(d), c, self.currency)
         elif type(other) is int:
+            if other <= 0:
+                raise ValueError('Cannot multiply dollars by a negative')
             return Dollars(
                 self.dollars * other,
                 self.cents * other,
@@ -86,7 +91,7 @@ class Dollars:
         if type(other) is not Dollars:
             raise TypeError()
         if self.currency != other.currency:
-            raise CurrencyException()
+            raise CurrencyException('Currencies do not match')
         return self.dollars < other.dollars or \
                self.dollars == other.dollars and \
                self.cents < other.cents
