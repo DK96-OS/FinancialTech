@@ -1,13 +1,14 @@
+""" Testing for the Time Unit Enum """
 import unittest
 
-from model.time.exceptions import TimeConversionException
+from model.time import TimeConversionException, convert_time
 from model.time import time_unit
-from model.time.time_unit import TimeUnit, convert_time
+from model.time.time_unit import TimeUnit
 
 
 class TestTimeUnit(unittest.TestCase):
     """ Testing for TimeUnit Enum class, developed by DK96-OS 2021 """
-    
+
     def test_accurate_conversions_group1(self):
         """ Test the conversion factors within group 1 """
         self.assertEqual(1/7, convert_time(TimeUnit.DAILY, TimeUnit.WEEKLY))
@@ -43,7 +44,11 @@ class TestTimeUnit(unittest.TestCase):
 
     def test_inaccurate_conversion(self):
         """ Any conversion between the two groups is inaccurate """
-        for u0 in time_unit.time_group_1:
-            for u1 in time_unit.time_group_2:
+        for unit_1 in time_unit.TIME_GROUP_1:
+            for unit_2 in time_unit.TIME_GROUP_2:
                 with self.assertRaises(TimeConversionException):
-                    convert_time(u0, u1)
+                    convert_time(unit_1, unit_2)
+
+
+if __name__ == '__main__':
+    unittest.main()
