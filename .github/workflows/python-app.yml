@@ -28,10 +28,10 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Model Lint check 
       run: |
-        pylint -j 0 model
+        pylint -j 0 --exit-zero model
     - name: Tests Lint check
       run: |
-        pylint -j 0 tests
+        pylint -j 0 --exit-zero tests
     - name: Run unit tests
       run: |
         python -m unittest discover -v
