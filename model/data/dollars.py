@@ -68,20 +68,20 @@ class Dollars:
     def __eq__(self, other):
         """ Equals comparison """
         return isinstance(other, Dollars) and \
-               self.currency == other.currency and \
-               self.dollars == other.dollars and \
-               self.cents == other.cents
+            self.currency == other.currency and \
+            self.dollars == other.dollars and \
+            self.cents == other.cents
 
     def __mul__(self, other):
         """ Multiplication operation """
         if isinstance(other, float):
             if other <= 0:
                 raise ValueError('Cannot multiply dollars by a negative')
-            d = self.dollars * other
-            d_over = math.floor((d - math.floor(d)) * 100)
-            c = round(self.cents * other + d_over)
-            return Dollars(round(d), c, self.currency)
-        elif isinstance(other, int):
+            d_raw = self.dollars * other
+            d_overflow = math.floor((d_raw - math.floor(d_raw)) * 100)
+            cents = round(self.cents * other + d_overflow)
+            return Dollars(round(d_raw), cents, self.currency)
+        if isinstance(other, int):
             if other <= 0:
                 raise ValueError('Cannot multiply dollars by a negative')
             return Dollars(
