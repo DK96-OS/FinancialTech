@@ -1,16 +1,19 @@
+""" Dollar Data structure """
 import math
 
 from model.data.currencies import default_currency, verified_currencies
-from model.data.data_exceptions import CurrencyException
+from model.data import CurrencyException
 
 
 class Dollars:
     """ Represents an amount of money in dollars and cents.
         100 cents are in a dollar.
     """
+    
     def __init__(self,
                  dollars: int, cents: int = 0,
-                 currency: str = default_currency):
+                 currency: str = default_currency
+                ):
         # Validate currency
         cur = currency.upper()  # Ensure always uppercase
         if len(cur) == 3 and \
@@ -19,13 +22,13 @@ class Dollars:
         else:
             raise CurrencyException()
         # Validate dollar and cent values
-        if type(dollars) is not int:
+        if not isinstance(dollars, int):
             raise TypeError('Dollars must be an integer')
-        elif type(cents) is not int:
+        if not isinstance(cents, int):
             raise TypeError('Cents must be an integer')
         if dollars < 0 or cents < 0:
             raise ValueError('Negative dollars not allowed')
-        elif cents in range(0, 100):
+        if cents in range(0, 100):
             self.dollars, self.cents = dollars, cents
         else:
             self.cents = cents % 100
@@ -53,7 +56,7 @@ class Dollars:
 
     def check_compatible(self, other):
         """ Determines whether these two arguments are compatible """
-        if not type(other) is Dollars:
+        if not isinstance(other, Dollars):
             raise TypeError
         if self.currency != other.currency:
             raise CurrencyException('Currencies do not match')
@@ -63,20 +66,20 @@ class Dollars:
         return self.dollars + (self.cents / 100.0)
 
     def __eq__(self, other):
-        return type(other) is Dollars and \
+        return isinstance(other, Dollars) and \
                self.currency == other.currency and \
                self.dollars == other.dollars and \
                self.cents == other.cents
 
     def __mul__(self, other):
-        if type(other) is float:
+        if isinstance(other, float):
             if other <= 0:
                 raise ValueError('Cannot multiply dollars by a negative')
             d = self.dollars * other
             d_over = math.floor((d - math.floor(d)) * 100)
             c = round(self.cents * other + d_over)
             return Dollars(round(d), c, self.currency)
-        elif type(other) is int:
+        elif isinstance(other, int):
             if other <= 0:
                 raise ValueError('Cannot multiply dollars by a negative')
             return Dollars(
@@ -84,11 +87,10 @@ class Dollars:
                 self.cents * other,
                 self.currency
             )
-        else:
-            raise TypeError('Cannot multiply by non-numerical type')
+        raise TypeError('Cannot multiply by non-numerical type')
 
     def __lt__(self, other):
-        if type(other) is not Dollars:
+        if not isinstance(other, Dollars):
             raise TypeError()
         if self.currency != other.currency:
             raise CurrencyException('Currencies do not match')
