@@ -1,13 +1,15 @@
-default_currency = 'USD'    # Global Currency default
+""" Currencies define the meaning of dollar values """
 
-verified_currencies = [
+DEFAULT_CURRENCY = 'USD'    # Global Currency default
+
+VERIFIED_CURRENCIES = [
     'USD', 'CAD', 'AUD', 'EUR', 'BRL', 'KYD', 'GBP',
     'CZK', 'DKK', 'ARS', 'HKD', 'INR', 'XAF', 'XOF',
 ]
 
 # Reference for currency information:
 # Saved as a tuple, (0: full name, 1: dollar name, 2: cent name)
-currency_ref = {
+CURRENCY_REF = {
     'USD': ('United States Dollar', 'Dollar', 'Cent'),
     'CAD': ('Canadian Dollar', 'Dollar', 'Cent'),
     'AUD': ('Australian Dollar', 'Dollar', 'Cent'),
