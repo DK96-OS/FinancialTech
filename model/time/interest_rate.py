@@ -52,8 +52,7 @@ class InterestRate:
             time_convert_factor = convert_time(unit, self.rate_cycle)
             return principal * rate_time_product * time_convert_factor
         except TimeConversionException:
-            print("Time Conversion Failed")
-            raise ValueError('Provided time unit is incompatible')
+            raise ValueError from TimeConversionException
 
     def __str__(self) -> str:
         num = round(self.rate * 100, 3) # Max 3 decimal points
