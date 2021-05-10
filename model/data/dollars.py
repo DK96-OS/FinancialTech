@@ -1,7 +1,7 @@
 """ Dollar Data structure """
 import math
 
-from model.data.currencies import default_currency, verified_currencies
+from model.data.currencies import DEFAULT_CURRENCY, VERIFIED_CURRENCIES
 from model.data import CurrencyException
 
 
@@ -9,15 +9,15 @@ class Dollars:
     """ Represents an amount of money in dollars and cents.
         100 cents are in a dollar.
     """
-    
+
     def __init__(self,
                  dollars: int, cents: int = 0,
-                 currency: str = default_currency
-                ):
+                 currency: str = DEFAULT_CURRENCY
+                 ):
         # Validate currency
         cur = currency.upper()  # Ensure always uppercase
         if len(cur) == 3 and \
-                cur in verified_currencies or cur.isalpha():
+                cur in VERIFIED_CURRENCIES or cur.isalpha():
             self.currency = cur
         else:
             raise CurrencyException()
@@ -66,12 +66,14 @@ class Dollars:
         return self.dollars + (self.cents / 100.0)
 
     def __eq__(self, other):
+        """ Equals comparison """
         return isinstance(other, Dollars) and \
                self.currency == other.currency and \
                self.dollars == other.dollars and \
                self.cents == other.cents
 
     def __mul__(self, other):
+        """ Multiplication operation """
         if isinstance(other, float):
             if other <= 0:
                 raise ValueError('Cannot multiply dollars by a negative')
@@ -90,13 +92,13 @@ class Dollars:
         raise TypeError('Cannot multiply by non-numerical type')
 
     def __lt__(self, other):
+        """ Less Than Comparison """
         if not isinstance(other, Dollars):
-            raise TypeError()
+            raise TypeError('Cannot compare to other type')
         if self.currency != other.currency:
             raise CurrencyException('Currencies do not match')
         return self.dollars < other.dollars or \
-               self.dollars == other.dollars and \
-               self.cents < other.cents
+            self.dollars == other.dollars and self.cents < other.cents
 
     def __str__(self):
         return f"${self.dollars}.{self.cents}"
