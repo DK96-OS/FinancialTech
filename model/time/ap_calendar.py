@@ -1,7 +1,8 @@
+""" Calendar Management for Accounting Periods """
 import calendar
 import datetime
 
-days_in_month = {
+DAYS_IN_MONTH = {
     1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
     7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
 }
@@ -9,11 +10,13 @@ days_in_month = {
 
 class APCalendar:
     """ Accounting Period Calendar """
+
     def __init__(self, year: int):
         self.year = year
         self.is_leap = calendar.isleap(year)
 
     def update_year(self, year: int):
+        """ Set the year of this calendar """
         self.year = year
         self.is_leap = calendar.isleap(year)
 
@@ -25,5 +28,4 @@ class APCalendar:
         """ Find the end date of the given month """
         if month == 2 and self.is_leap:
             return datetime.date(self.year, month, 29)
-        else:
-            return datetime.date(self.year, month, days_in_month[month])
+        return datetime.date(self.year, month, DAYS_IN_MONTH[month])
