@@ -22,7 +22,6 @@ class TestAPCalendar(unittest.TestCase):
         """ Start date of the month """
         for i in range(1, 13):
             date = self.cal.start_date(i)
-            print(date)
             self.assertEqual('01', str(date)[-2:])
         self.cal.update_year(1955)
         for i in range(1, 13):
@@ -32,7 +31,6 @@ class TestAPCalendar(unittest.TestCase):
         """ Start date of the month in leap years """
         for i in range(1, 13):
             date = self.c_leap.start_date(i)
-            print(date)
             self.assertEqual('01', str(date)[-2:])
         self.c_leap.update_year(2024)
         for i in range(1, 13):
@@ -42,12 +40,10 @@ class TestAPCalendar(unittest.TestCase):
         """ Check end of the month dates in non-leap years"""
         for i in range(1, 13):
             date = self.cal.end_date(i)
-            print(date)
             self.assertEqual(str(DAYS_IN_MONTH[i]), str(date)[-2:])
         self.cal.update_year(2029)
         for i in range(1, 13):
             date = self.cal.end_date(i)
-            print(date)
             self.assertEqual(str(DAYS_IN_MONTH[i]), str(date)[-2:])
 
     def test_end_date_monthly_leap(self):
@@ -56,14 +52,12 @@ class TestAPCalendar(unittest.TestCase):
         self.assertEqual(str(29), str(self.c_leap.end_date(2))[-2:])
         for i in range(3, 13):
             date = self.c_leap.end_date(i)
-            print(date)
             self.assertEqual(str(DAYS_IN_MONTH[i]), str(date)[-2:])
         self.c_leap.update_year(2024)
         self.assertEqual(str(31), str(self.c_leap.end_date(1))[-2:])
         self.assertEqual(str(29), str(self.c_leap.end_date(2))[-2:])
         for i in range(3, 13):
             date = self.c_leap.end_date(i)
-            print(date)
             self.assertEqual(str(DAYS_IN_MONTH[i]), str(date)[-2:])
 
     def test_net_days(self):
