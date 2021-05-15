@@ -2,6 +2,8 @@
 import calendar
 import datetime
 
+from model.time.accounting_period import AccountingPeriod
+
 DAYS_IN_MONTH = {
     1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
     7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
@@ -29,3 +31,12 @@ class APCalendar:
         if month == 2 and self.is_leap:
             return datetime.date(self.year, month, 29)
         return datetime.date(self.year, month, DAYS_IN_MONTH[month])
+
+    def get_ap_date_range(self, month: int) -> tuple:
+        """ Get the date range for a monthly accounting cycle """
+        return self.start_date(month), self.end_date(month)
+
+    def get_ap(self, month: int) -> AccountingPeriod:
+        """ Get an Accounting Period for the given month """
+        return AccountingPeriod(
+            self.start_date(month), self.end_date(month))

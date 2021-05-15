@@ -79,6 +79,26 @@ class TestAPCalendar(unittest.TestCase):
             net_days(datetime.date(2020, 2, 20), 30)
         )
 
+    def test_ap_date_range(self):
+        """ Check the Accounting Period date range method """
+        feb_2018_range = self.cal.get_ap_date_range(2)
+        self.assertEqual(
+            datetime.date(2018, 2, 1), feb_2018_range[0])
+        self.assertEqual(
+            datetime.date(2018, 2, 28), feb_2018_range[1])
+        feb_2020_range = self.c_leap.get_ap_date_range(2)
+        self.assertEqual(
+            datetime.date(2020, 2, 1), feb_2020_range[0])
+        self.assertEqual(
+            datetime.date(2020, 2, 29), feb_2020_range[1])
+
+    def test_ap_date_range_invalid(self):
+        """ Invalid inputs to the date range method """
+        with self.assertRaises(ValueError):
+            self.cal.get_ap_date_range(0)
+        with self.assertRaises(ValueError):
+            self.cal.get_ap_date_range(13)
+
 
 if __name__ == '__main__':
     unittest.main()
