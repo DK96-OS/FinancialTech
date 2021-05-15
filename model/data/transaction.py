@@ -66,7 +66,7 @@ class Transaction:
 
     def unpost_from_accounts(self) -> bool:
         """ Removes this transaction
-            :returns True if succeeded in removing transaction
+            :returns True if transaction is not posted (now or before)
         """
         if self._debited_account is not None:
             result = self._debited_account.remove_transaction(self)
