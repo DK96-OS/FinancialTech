@@ -1,4 +1,4 @@
-""" Essential Financial Data structures """
+""" This Data module contains essential Accounting Data structures """
 
 
 class CurrencyException(Exception):
