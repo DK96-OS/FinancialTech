@@ -1,11 +1,11 @@
 """ A transaction represents a transfer of Dollars between Accounts """
 import datetime
 
-from model.data.t_account import TAccount
 from model.data.dollars import Dollars
 
+
 class Transaction:
-  """ Data Structure for a Transaction """
+    """ Data Structure for a Transaction """
 
     def __init__(self,
                  reference_id,
@@ -36,18 +36,17 @@ class Transaction:
 
     def get_affected_accounts(self) -> tuple:
         """ The ids of the accounts: debited, then credited.
-             :returns an empty tuple if either account is missing
+        :returns an empty tuple if either account is missing
         """
         deb, cred = self._debited_account, self._credited_account
         if deb is not None and cred is not None:
             return deb.account_id, cred.account_id
         return ()
 
-    def post_to_accounts(
-            self, debited: TAccount, credited: TAccount
-    ) -> bool:
+    def post_to_accounts(self, debited, credited) -> bool:
         """ Connect this transaction to the given accounts
             If there were already accounts posted, reverse them
+        :returns True if posting succeeded
          """
         if debited == credited or debited.account_id == credited.account_id:
             raise ValueError('A transaction must involve two separate accounts')
@@ -65,13 +64,17 @@ class Transaction:
         return True
 
     def unpost_from_accounts(self) -> bool:
-        """ Removes this transaction
-            :returns True if transaction is not posted (now or before)
+        """ Removes this transaction.
+        :returns True if transaction is not posted (now or before)
         """
         if self._debited_account is not None:
             result = self._debited_account.remove_transaction(self)
             if not result:
                 return False
+            self._debited_account = None
         if self._credited_account is not None:
-            return self._credited_account.remove_transaction(self)
+            result = self._credited_account.remove_transaction(self)
+            if not result:
+                return False
+            self._credited_account = None
         return True
