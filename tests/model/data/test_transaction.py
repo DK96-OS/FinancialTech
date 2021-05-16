@@ -1,6 +1,7 @@
 """ Testing for the Transaction Data structure
     Transaction is coupled with the T Account class
 """
+# pylint: disable=protected-access
 import datetime
 import unittest
 
@@ -8,7 +9,6 @@ from model.data.dollars import Dollars
 from model.data.transaction import Transaction
 from model.time.accounting_period import AccountingPeriod
 from model.data.t_account import TAccount
-
 
 # Test constants
 DATE_RANGE = (datetime.date(2018, 2, 1), datetime.date(2018, 2, 28))
