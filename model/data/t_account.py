@@ -7,10 +7,10 @@ from model.time.accounting_period import AccountingPeriod
 class TAccount:
     """ An Account that is available for one Accounting Period """
 
-    def __init__(self,
-                 number: int,
-                 accounting_period: AccountingPeriod,
-                 ):
+    def __init__(
+            self, number: int,
+            accounting_period: AccountingPeriod,
+    ):
         self.account_id = number
         self.account_period = accounting_period
         self._debit_transactions, self._debit_balance = list(), Dollars(0)
@@ -18,7 +18,7 @@ class TAccount:
 
     def debit(self, transaction: Transaction) -> bool:
         """ Add a debit transaction, update balance.
-            :returns True if succeeded, false if date is incorrect
+        :returns True if succeeded, false if date is incorrect
         """
         if not self.account_period.contains_date(transaction.date):
             return False
@@ -28,7 +28,7 @@ class TAccount:
 
     def credit(self, transaction: Transaction) -> bool:
         """ Add a credit transaction, update balance.
-            :returns True if succeeded, false if date is incorrect
+        :returns True if succeeded, false if date is incorrect
         """
         if not self.account_period.contains_date(transaction.date):
             return False
@@ -38,7 +38,7 @@ class TAccount:
 
     def remove_transaction(self, transaction: Transaction) -> bool:
         """ Remove transaction, recalculate balance.
-            :returns True if succeeded, false if transaction not found
+        :returns True if succeeded, false if transaction not found
         """
         if transaction in self._debit_transactions:
             self._debit_transactions.remove(transaction)
