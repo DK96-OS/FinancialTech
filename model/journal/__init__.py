@@ -1,0 +1,3 @@
+""" Journalling:
+  Recording economic events
+"""
