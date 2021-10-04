@@ -11,4 +11,8 @@ def is_valid_date(string: str) -> bool:
         return False
     if str.count(string, '-') != 2:
         return False
-    return string.strip('-').isnumeric()
+    if not string.replace('-', '').isnumeric():
+        return False
+    # Todo: Check valid month, and day
+    # Todo: Constrain years
+    return True
