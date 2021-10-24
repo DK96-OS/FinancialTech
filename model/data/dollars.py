@@ -1,45 +1,47 @@
 """ Dollar Data structure """
 import math
+from dataclasses import dataclass
 
 from model.data.currencies import DEFAULT_CURRENCY, VERIFIED_CURRENCIES
 from model.data import CurrencyException
 
 
+@dataclass(frozen=True)
 class Dollars:
     """ Represents an amount of money in dollars and cents.
         100 cents are in a dollar.
     """
+    dollars: int
+    cents: int = 0
+    currency: str = DEFAULT_CURRENCY
 
-    def __init__(self,
-                 dollars: int, cents: int = 0,
-                 currency: str = DEFAULT_CURRENCY
-                 ):
+    def __post_init__(self):
         # Validate currency
-        cur = currency.upper()  # Ensure always uppercase
-        if len(cur) == 3 and \
-                cur in VERIFIED_CURRENCIES or cur.isalpha():
-            self.currency = cur
-        else:
+        if len(self.currency) != 3 or \
+                self.currency not in VERIFIED_CURRENCIES:
             raise CurrencyException()
         # Validate dollar and cent values
-        if not isinstance(dollars, int):
+        if not isinstance(self.dollars, int):
             raise TypeError('Dollars must be an integer')
-        if not isinstance(cents, int):
+        if not isinstance(self.cents, int):
             raise TypeError('Cents must be an integer')
-        if dollars < 0 or cents < 0:
+        if self.dollars < 0 or self.cents < 0:
             raise ValueError('Negative dollars not allowed')
-        if cents in range(0, 100):
-            self.dollars, self.cents = dollars, cents
-        else:
-            self.cents = cents % 100
-            self.dollars = dollars + math.floor(cents / 100)
+        if self.cents >= 100:
+            # todo: support currencies with 1000 cents
+            raise ValueError("Cents should be rounded into dollars")
 
     def __add__(self, other):
         """ Returns the Sum of two Dollar Amounts """
         self.check_compatible(other)
+        dollars = self.dollars + other.dollars
+        cents = self.cents + other.cents
+        if cents >= 100:
+            dollars += cents // 100     # Update Dollars first
+            cents = cents % 100
         return Dollars(
-            dollars=self.dollars + other.dollars,
-            cents=self.cents + other.cents,
+            dollars=dollars,
+            cents=cents,
             currency=self.currency
         )
 
@@ -75,19 +77,31 @@ class Dollars:
     def __mul__(self, other):
         """ Multiplication operation """
         if isinstance(other, float):
-            if other <= 0:
+            if other < 0:
                 raise ValueError('Cannot multiply dollars by a negative')
+            elif other == 0:
+                return Dollars(0, 0, self.currency)
             d_raw = self.dollars * other
             d_overflow = math.floor((d_raw - math.floor(d_raw)) * 100)
             cents = round(self.cents * other + d_overflow)
-            return Dollars(round(d_raw), cents, self.currency)
-        if isinstance(other, int):
-            if other <= 0:
-                raise ValueError('Cannot multiply dollars by a negative')
+            if cents >= 100:
+                d_raw += cents // 100  # Update Dollars first
+                cents = cents % 100
             return Dollars(
-                self.dollars * other,
-                self.cents * other,
-                self.currency
+                round(d_raw), cents, self.currency
+            )
+        if isinstance(other, int):
+            if other < 0:
+                raise ValueError('Cannot multiply dollars by a negative')
+            elif other == 0:
+                return Dollars(0, 0, self.currency)
+            d_raw = self.dollars * other
+            cents = round(self.cents * other)
+            if cents >= 100:
+                d_raw += cents // 100  # Update Dollars first
+                cents = cents % 100
+            return Dollars(
+                d_raw, cents, self.currency
             )
         raise TypeError('Cannot multiply by non-numerical type')
 
