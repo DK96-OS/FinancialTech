@@ -13,11 +13,6 @@ class TestAPCalendar(unittest.TestCase):
         self.cal = APCalendar(year=2018)
         self.c_leap = APCalendar(year=2020)
 
-    def test_init(self):
-        """ Initialization works """
-        self.assertEqual(False, self.cal.is_leap)
-        self.assertEqual(True, self.c_leap.is_leap)
-
     def test_start_date_monthly(self):
         """ Start date of the month """
         for i in range(1, 13):
