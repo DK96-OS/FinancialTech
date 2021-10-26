@@ -44,3 +44,25 @@ class TestAccountingPeriod(unittest.TestCase):
         self.assertEqual(
             (datetime.date(2021, 2, 1), datetime.date(2021, 2, 28)),
             self.ap_2.get_date_range())
+
+    def test_lt_le_methods(self):
+        """ Test the Less than (equals) comparison methods """
+        self.assertEquals(True, self.ap_1 < self.ap_2)
+        self.assertEquals(False, self.ap_2 < self.ap_1)
+        self.assertEquals(
+            True, CAL_2021.get_ap(5) <= CAL_2021.get_ap(5)
+        )
+        self.assertEquals(
+            False, CAL_2021.get_ap(6) < CAL_2021.get_ap(6)
+        )
+
+    def test_gt_ge_methods(self):
+        """ Test the Greater Than (equals) comparison methods """
+        self.assertEquals(True, self.ap_2 > self.ap_1)
+        self.assertEquals(False, self.ap_1 > self.ap_2)
+        self.assertEquals(
+            True, CAL_2021.get_ap(5) >= CAL_2021.get_ap(5)
+        )
+        self.assertEquals(
+            False, CAL_2021.get_ap(6) > CAL_2021.get_ap(6)
+        )
