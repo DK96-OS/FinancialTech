@@ -5,6 +5,7 @@ import unittest
 
 from model.data.dollars import Dollars
 from model.journal.base_journal import BaseJournal
+from model.journal.journal_attributes import JournalAttributes
 from model.journal.journal_entry import JournalEntry
 from model.time.accounting_period import AccountingPeriod
 
@@ -16,20 +17,28 @@ class TestBaseJournal(unittest.TestCase):
     """ Journal Initialization and operation testing """
 
     def setUp(self) -> None:
-        self.test_journal = BaseJournal(
-            name='General',
+        self.test_attrs = JournalAttributes(
+            journal_name='General',
             opening_date=AP.get_open_date(),
             closing_date=AP.get_close_date()
+        )
+        self.test_journal = BaseJournal(
+            self.test_attrs
         )
 
     def test_init(self):
         """ Journal Initial state """
         self.assertEqual(
-            'General', self.test_journal.name)
+            'General', self.test_journal.attributes.journal_name
+        )
         self.assertEqual(
-            AP.get_open_date(), self.test_journal.get_open_date())
+            AP.get_open_date(),
+            self.test_journal.attributes.get_open_date()
+        )
         self.assertEqual(
-            AP.get_close_date(), self.test_journal.get_close_date())
+            AP.get_close_date(),
+            self.test_journal.attributes.get_close_date()
+        )
 
     def test_add_entry(self):
         """ Journal Entry Insertion """
